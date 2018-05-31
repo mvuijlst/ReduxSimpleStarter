@@ -1,20 +1,42 @@
-import React from 'react';
+import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-
+import YTSearch from 'youtube-api-search';
 import SearchBar from './components/search_bar';
-import DateInput from './components/date_input';
-
+import VideoList from './components/video_list';
+import VideoDetail from './components/video_detail';
 const API_KEY = 'AIzaSyDS4rxJAQkvA7uJv8J7RmES11XZpf6Hrn0';
 
-// create new component, should produce html
-const App = () => {
-    return (
-        <div>
-            <SearchBar />
-            {/* <DateInput /> */}
-        </div>
-    );
-};
+class App extends Component {
 
-// shove component's generated html in DOM
+    constructor(props) {
+        super(props);
+
+        this.state = { 
+            videos: [], 
+            selectedVideo: null
+        };
+
+        YTSearch({key: API_KEY, term: 'klezmatics'}, (videos) => {
+            this.setState({ 
+                videos: videos,
+                selectedVideo: videos[0]
+            });
+        });
+    }
+
+    render() {
+        return (
+            <div>
+                <SearchBar />
+                <VideoDetail video={this.state.selectedVideo} />
+                <VideoList 
+                    onVideoSelect={selectedVideo => this.setState({selectedVideo})}
+                    videos={this.state.videos} />
+            </div>
+        );
+    }
+
+}
+
+
 ReactDOM.render(<App />, document.querySelector('.container'));
