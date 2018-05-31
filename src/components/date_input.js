@@ -19,7 +19,7 @@ class DateInput extends Component {
             if (!tt[0].match(/[0-9]/g)) {
                 tt='';
             }
-            // if > 3, prefix '0
+            // if > 3, prefix '0'
             else if (tt[0] && tt[0].match(/[4-9]/g)) {
                 tt = '0'+tt;
             }
